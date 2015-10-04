@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="isTablet">true</bool>
+    <integer name="numCols_land">2</integer>
+    <integer name="numCols_port">1</integer>
+</resources>
