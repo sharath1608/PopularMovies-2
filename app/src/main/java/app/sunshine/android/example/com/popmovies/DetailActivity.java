@@ -17,11 +17,11 @@ public class DetailActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.indigo_500)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.indigo_700)));
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.indigo_700));
+        window.setStatusBarColor(this.getResources().getColor(R.color.indigo_900));
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
             movieId = extras.getString(Intent.EXTRA_TEXT);

@@ -47,8 +47,7 @@ public class GridViewAdapter extends ArrayAdapter<GridViewObject>{
             viewHolder =(ViewHolderItem) convertView.getTag();
         }
         viewHolder.movieTag.setText(gridViewObjects.get(position).getMovieTag());
-        //viewHolder.movieTag.setVisibility(View.INVISIBLE);
-        //viewHolder.movieImage.setVisibility(View.INVISIBLE);
+
 
         PicassoImageCache
                 .getPicassoInstance(mContext)

@@ -893,7 +893,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         title.setText(popupTitle);
         title.setPadding(10, 25, 10, 20);
         title.setTextSize(21);
-        title.setBackgroundColor(getResources().getColor(R.color.cyan_100));
+        title.setTextColor(getResources().getColor(R.color.title_text_color));
+        title.setBackgroundColor(getResources().getColor(R.color.indigo_500));
         title.setGravity(Gravity.CENTER);
         builder.setCustomTitle(title);
         Button dismissButton = (Button) view.findViewById(R.id.dialog_dismiss_button);
