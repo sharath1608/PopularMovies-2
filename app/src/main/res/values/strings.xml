@@ -4,7 +4,7 @@
     <string name="tmdb_base_uri">http://api.themoviedb.org/3</string>
     <string name="discover_tag">discover</string>
     <string name="movie_tag">movie</string>
-    <string name="api_key">630c07fa3fa86475de3cf0cd80027814</string>
+    <string name="api_key"></string>
     <string name="minutes">min</string>
     <string name="no_overview">No overview available</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p</string>
