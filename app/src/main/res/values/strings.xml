@@ -4,7 +4,7 @@
     <string name="tmdb_base_uri">http://api.themoviedb.org/3</string>
     <string name="discover_tag">discover</string>
     <string name="movie_tag">movie</string>
-    <string name="api_key"></string>
+    <string name="api_key">630c07fa3fa86475de3cf0cd80027814</string>
     <string name="minutes">min</string>
     <string name="no_overview">No overview available</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p</string>
@@ -35,8 +35,8 @@
     <string name="dialog_close">Close</string>
     <string name="review">Review</string>
     <string name="overview">Overview</string>
-    <string name="no_review_text">No reviews available for this movie</string>
-    <string name="no_trailer_text">No trailers available for this movie</string>
+    <string name="no_review_text">No reviews available for this movie!</string>
+    <string name="no_trailer_text">No trailers available for this movie!</string>
     <string name="appendAttr">trailers,credits</string>
     <string name="youtube_base_uri">https://www.youtube.com/watch?v=</string>
     <string name="cast_profile_baseURI">http://image.tmdb.org/t/p/w185/</string>
@@ -48,8 +48,8 @@
     <string name="share_base_string_1">Hey there! Check out this awesome trailer </string>
     <string name="share_base_string_2"> from the movie </string>
     <string name="share_base_string3">#Flixology</string>
-    <string name="no_share_text">No trailers available to share</string>
-    <string name="no_detals_text">No details available for this cast member</string>
+    <string name="no_share_text">No trailers available to share.</string>
+    <string name="no_detals_text">No details available for this cast member.</string>
     <string name="no_fav_text">No favorites to display</string>
     <string name="fav_add_success">Added to favorites</string>
     <string name="fav_add_failure">Some weird error occurred.</string>
