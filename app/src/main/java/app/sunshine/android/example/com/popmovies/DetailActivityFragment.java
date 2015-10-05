@@ -238,11 +238,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
                 break;
             case FAV_LOADER:
-                if (data.moveToFirst()) {
-                    isFavorite = true;
-                } else {
-                    isFavorite = false;
-                }
+                isFavorite = data.moveToFirst();
                 setFabColor();
                 break;
 
@@ -264,6 +260,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                 } else {
                     Review reviewObject = new Review();
                     reviewObject.setReviewText(getString(R.string.no_review_text));
+                    reviewObject.setAuthor("");
                     reviewsDB = new Review[]{reviewObject};
                 }
                 thisMovieData.setReviews(reviewsDB);
@@ -310,7 +307,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             if (isMovieInDB) {
                 setFragmentViews();
             }else{
-                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                if (!Utilities.isNetworkAvailable(getActivity())) {
                     if(progDialog!=null && progDialog.isShowing())
                         progDialog.dismiss();
                     commonToast = Toast.makeText(getActivity(), getString(R.string.no_connect_string), Toast.LENGTH_SHORT);

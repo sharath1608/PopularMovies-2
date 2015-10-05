@@ -6,34 +6,31 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 
-/**
- * Created by Asus1 on 9/23/2015.
+/*
+ * Credit :http://stackoverflow.com/users/1908296/ahmed-hamdy
  */
 public class PicassoImageCache {
 
-        // static picasso constructor
-        private static Picasso picassoInstance = null;
+    // static picasso constructor
+    private static Picasso picassoInstance = null;
 
-        private PicassoImageCache (Context context) {
+    private PicassoImageCache (Context context) {
 
-            Downloader downloader   = new OkHttpDownloader(context, Integer.MAX_VALUE);
-            Picasso.Builder builder = new Picasso.Builder(context);
-            builder.downloader(downloader);
+        Downloader downloader   = new OkHttpDownloader(context, Integer.MAX_VALUE);
+        Picasso.Builder builder = new Picasso.Builder(context);
+        builder.downloader(downloader);
+        picassoInstance = builder.build();
+    }
 
-            picassoInstance = builder.build();
-            picassoInstance.setIndicatorsEnabled(true);
-        }
+    // get picasso instance
+    public static Picasso getPicassoInstance (Context context) {
 
-        // get picasso instance
-        public static Picasso getPicassoInstance (Context context) {
+        if (picassoInstance == null) {
 
-            if (picassoInstance == null) {
-
-                new PicassoImageCache(context);
-                return picassoInstance;
-            }
-
+            new PicassoImageCache(context);
             return picassoInstance;
         }
-
+        return picassoInstance;
     }
+
+}

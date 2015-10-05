@@ -2,13 +2,11 @@ package app.sunshine.android.example.com.popmovies;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -60,19 +58,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private GridView gridView;
     private Toast commonToast;
     private static int pagenum;
-    private boolean rogueFirstTime;
+    private int rogueCounter;
     private boolean orientationChanged;
     private final String spinPosKey = "sortPos";
     private final String spinStringKey = "sortString";
     private boolean nextPageCalling;
     private String favSortString;
-    private String showSortString;
-    private String grossSortString;
-    private String popSortString;
     private SharedPreferences prefs;
     private ProgressDialog progDialog;
-    private Configuration config;
+    private CursorLoader favLoader;
     private String[] cursorSelection = {MoviesEntry.TABLE_NAME + "." + MoviesEntry._ID, MoviesEntry.COLUMN_MOVIE_ID, MoviesEntry.COLUMN_MOVIE_TITLE, MoviesEntry.COLUMN_POSTER};
+    private String savedSpinnerPos;
 
     public MainActivityFragment() {
 
@@ -81,9 +77,30 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onStart() {
         super.onStart();
+        checkSpinnerAndFetch();
+    }
 
-        if (gridViewObjects.isEmpty())
+
+    /*  This method checks the spinner position from prefs and performs two actions
+     *  If the sortByValue is null, fetch movies with default spinner option.
+     *  If sortByValue is favorites, fetch from DB, else make HTTPrequest for movies.
+     */
+    public void checkSpinnerAndFetch(){
+        savedSpinnerPos = prefs.getString(spinPosKey, "");
+        if(savedSpinnerPos!=null && !savedSpinnerPos.isEmpty()) {
+            sortByValue = returnSpinnerText(Integer.parseInt(savedSpinnerPos));
+        }
+
+        //Check prefs if the sort is set. If null, fetch movies.
+        if (sortByValue != null && sortByValue.equals(favSortString)) {
+            if (favLoader == null) {
+                viewFavorites();
+            } else {
+                getLoaderManager().restartLoader(0, null, this);
+            }
+        } else if (gridViewObjects.isEmpty()) {
             fetchMovies();
+        }
     }
 
     @Override
@@ -93,9 +110,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         gridView = (GridView) view.findViewById(R.id.fragment_main_gridView);
         favSortString = getString(R.string.favorites);
-        grossSortString = getString(R.string.highest_grossing);
-        popSortString = getString(R.string.most_popular);
-        showSortString = getString(R.string.now_showing);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nextPageCalling = false;
         Configuration config = getResources().getConfiguration();
@@ -105,17 +119,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             position = savedInstanceState.getInt("position");
             orientationChanged = true;
         } else {
+            rogueCounter = 1;
             gridViewObjects = new ArrayList<>();
         }
 
         favCursorAdapter = new CustomFavViewAdapter(getActivity(), null, 0);
         movieGridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, gridViewObjects);
+        gridView.setAdapter(movieGridAdapter);
 
         // Set grid view columns for tablets.
-        if(getResources().getBoolean(R.bool.isTablet)) {
-            if(config.orientation == config.ORIENTATION_LANDSCAPE) {
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 gridView.setNumColumns(getResources().getInteger(R.integer.numCols_land));
-            }else if(config.orientation == config.ORIENTATION_PORTRAIT){
+            } else if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 gridView.setNumColumns(getResources().getInteger(R.integer.numCols_port));
             }
         }
@@ -123,6 +139,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                rogueCounter = 2;
                 String movieId = movieIds.get(position);
                 ((Callback) getActivity())
                         .onItemSelected(movieId);
@@ -139,8 +156,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-                // If reached the end of page, fetch the next page from the request.
-                if ((firstVisibleItem + visibleItemCount >= totalItemCount) && nextPageCalling) {
+                // If reached the end of page, fetch the next page from the request. This should happen only if the sort option is *not* favorites
+                if ((firstVisibleItem + visibleItemCount >= totalItemCount)
+                        && nextPageCalling
+                        && !sortByValue.equals(favSortString)) {
                     nextPageCalling = false;
                     pagenum++;
                     fetchMovies();
@@ -155,7 +174,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
 
         // Initialize and display progress dialog.
-        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+        if (Utilities.isNetworkAvailable(getActivity())) {
             progDialog = new ProgressDialog(getActivity());
             progDialog.setMessage(getString(R.string.progress_text_main));
             progDialog.setIndeterminate(true);
@@ -173,37 +192,46 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
         void onItemSelected(String id);
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        rogueCounter = 0;
         outState.putParcelableArrayList(movieKey, (ArrayList) gridViewObjects);
         outState.putInt("position", gridView.getFirstVisiblePosition());
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    public String returnSpinnerText(int spinnerPos) {
+
+        switch (spinnerPos) {
+            case 0:
+                return getString(R.string.now_showing_sort);
+            case 1:
+                return getString(R.string.popularity_sort);
+            case 2:
+                return getString(R.string.earnings_sort);
+            case 3:
+                return getString(R.string.favorites);
+            default:
+                return null;
+        }
     }
 
-    // Define the spinner to display the a drop-down menu to list the sort options.    @Override
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        String LOG_TAG = this.getClass().getSimpleName();
         super.onCreateOptionsMenu(menu, inflater);
 
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         String savedSpinnerPos = prefs.getString(spinPosKey, "");
         final Spinner sortingSpinner = (Spinner) menu.findItem(R.id.sort_spinner).getActionView();
         SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getActivity().getApplication(), R.array.sort_option, android.R.layout.simple_spinner_dropdown_item);
-        rogueFirstTime = true;
         sortingSpinner.setAdapter(spinnerAdapter);
-        if (savedSpinnerPos !=null && !savedSpinnerPos.isEmpty()) {
+        if (savedSpinnerPos != null && !savedSpinnerPos.isEmpty()) {
             sortingSpinner.setSelection(Integer.parseInt(savedSpinnerPos));
         }
         sortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -211,64 +239,44 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String itemSelected = parent.getItemAtPosition(position).toString();
-                SharedPreferences.Editor prefEditor = prefs.edit();
-                prefEditor.putString(spinPosKey, String.valueOf(position)).apply();
-                if (commonToast != null) {
-                    commonToast.cancel();
-                }
+                if (rogueCounter <= 0 && !orientationChanged) {
+                    SharedPreferences.Editor prefEditor = prefs.edit();
+                    prefEditor.putString(spinPosKey, String.valueOf(position)).apply();
+                    if (commonToast != null) {
+                        commonToast.cancel();
+                    }
+                    gridView.setAdapter(movieGridAdapter);
+                    sortByValue = returnSpinnerText(position);
 
-                // Sorting criteria
-                // Sort by popularity
-                if (itemSelected.equals(popSortString)) {
-                    sortByValue = getString(R.string.popularity_sort);
-                }
-                // Sort by "Now Showing"
-                else if (itemSelected.equals(showSortString)) {
-                    sortByValue = getString(R.string.now_showing_sort);
-                }
-                // Sort by highest grossing
-                else if (itemSelected.equals(grossSortString)) {
-                    sortByValue = getString(R.string.earnings_sort);
-                }
-                // Sort by favorites
-                else if (itemSelected.equals(favSortString)) {
-                    sortByValue = getString(R.string.favorites);
-                }
+                    // Depending on the sort criteria, set appropriate adapter for the view. If favorites, set favCursorAdapter, else set movieListAdapter
+                    prefEditor.putString(spinStringKey, sortByValue).apply();
+                    if (sortByValue.equals(favSortString)) {
+                        viewFavorites();
+                    }
 
-                // Depending on the sort criteria, set appropriate adapter for the view. If favorites, set favCursorAdapter, else set movieListAdapter
-                prefEditor.putString(spinStringKey, sortByValue).apply();
-                chooseAdapter();
-
-                if (sortByValue.equals(favSortString)) {
-                    viewFavorites();
-                }
-
-
-                // Not-so-elegant logic : OnItemSelected is triggered erroneously when orientation changes or view is being initialized.
-                // The movies must be fetched only when the user makes a selection.
-                // Regretting working with spinners. Needs to switch to swipe views.
-                if (!orientationChanged) {
+                    // Not-so-elegant hack : OnItemSelected is triggered erroneously :
+                    // Once when orientation changes
+                    // Once when spinner position is 0 AND a grid item is selected.
+                    // Twice when spinner position is not zero and item is selected.
+                    // rogueCounter is used to count the number of erroneous calls and pass through when the counter is 0.
+                    // The movies must be fetched ONLY when the user makes a selection.
+                    // Need a replacement for spinners
                     gridViewObjects = new ArrayList<>();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail_container, new DetailActivityFragment());
-
-                    // If entering the first time (initialization of view), or if selected favorites as sort, then skip and do not fetch movies.
-                    if (!rogueFirstTime && !sortByValue.equals(favSortString)) {
-                        pagenum = 1;
+                    if (!sortByValue.equals(favSortString)) {
+                        pagenum = 0;
                         movieIds = new ArrayList<>();
                         fetchMovies();
                     } else {
                         progDialog.dismiss();
-                        rogueFirstTime = false;
                     }
                 } else {
-                    nextPageCalling = true;
                     orientationChanged = false;
-                    rogueFirstTime = false;
+                    rogueCounter--;
+                    if (position == 0)
+                        rogueCounter = 0;
                     progDialog.dismiss();
                 }
             }
-
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -277,47 +285,46 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         });
     }
 
-    public void chooseAdapter() {
-
-        if (sortByValue.equals(getString(R.string.favorites))) {
-            gridView.setAdapter(favCursorAdapter);
-        } else {
-            gridView.setAdapter(movieGridAdapter);
-        }
-    }
-
     public void viewFavorites() {
         gridView.setAdapter(favCursorAdapter);
         getLoaderManager().initLoader(0, null, this);
     }
 
+    /* As of now, only favorites is being persisted in DB.
+     * favCursorAdapter is set to display favorites only.
+     */
     @Override
     public CursorLoader onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),
+        favLoader = new CursorLoader(getActivity(),
                 FavoriteEntry.CONTENT_URI,
                 cursorSelection,
                 null,
                 null,
                 null);
+
+        return favLoader;
     }
 
     @Override
     public void onLoadFinished(Loader loader, Cursor data) {
         movieIds = new ArrayList<>();
+        favCursorAdapter.swapCursor(data);
         if (data.moveToFirst()) {
             do {
                 movieIds.add(data.getString(data.getColumnIndex(MoviesEntry.COLUMN_MOVIE_ID)));
             } while (data.moveToNext());
-            favCursorAdapter.swapCursor(data);
             progDialog.dismiss();
         } else {
             displayToastMessage(getString(R.string.no_fav_text));
         }
     }
 
-    // This method disables any progress dialogue and displays the toast.
-    public void displayToastMessage(String message){
-        if(progDialog!=null && progDialog.isShowing()){
+
+    /* This method disables any progress dialogue and displays the toast.
+    */
+
+    public void displayToastMessage(String message) {
+        if (progDialog != null && progDialog.isShowing()) {
             progDialog.dismiss();
         }
         commonToast = Toast.makeText(getActivity(),
@@ -334,7 +341,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public void fetchMovies() {
         FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
-        if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+        if (!Utilities.isNetworkAvailable(getActivity())) {
             displayToastMessage(getString(R.string.no_connect_string));
         } else
             fetchMoviesTask.execute();
@@ -362,7 +369,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
             try {
-                sortByValue = prefs.getString(spinStringKey, "");
                 if (sortByValue == null || sortByValue.isEmpty()) {
                     sortByValue = getString(R.string.now_showing_sort);
                 }
@@ -398,21 +404,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 }
 
                 InputStream streamReader = urlConnection.getInputStream();
-                StringBuilder stringBuffer = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 if (streamReader == null) {
                     return null;
                 }
-
                 reader = new BufferedReader(new InputStreamReader(streamReader));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    stringBuffer.append(line + "\n");
+                    stringBuilder.append(line + "\n");
                 }
-                if (stringBuffer.length() == 0) {
+                if (stringBuilder.length() == 0) {
                     return null;
                 }
-                moviesJsonString = stringBuffer.toString();
+                moviesJsonString = stringBuilder.toString();
                 try {
                     gridViewObjects.addAll(getMoviesFromJson(moviesJsonString, posterSize));
                 } catch (JSONException e) {
@@ -467,8 +472,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             return movieGridObjects;
         }
 
-
-        //TODO: If  a new arrayList is not used to store the data from res, on movieGridAdapter.clear() wipes out res. Investigate
         @Override
         protected void onPostExecute(List<GridViewObject> res) {
             if (res != null) {
