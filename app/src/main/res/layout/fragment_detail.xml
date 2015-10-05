@@ -24,7 +24,6 @@
             android:id="@+id/port_title_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/movie_backdrop_layout"
             android:background="@color/indigo_300"
@@ -50,11 +49,9 @@
             android:id="@+id/movie_image_detail"
             android:layout_width="120dp"
             android:layout_height="180dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/port_title_layout"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="36dp"
             android:layout_marginStart="36dp"
             android:layout_marginTop="30dp"
             android:cropToPadding="true"
@@ -65,9 +62,9 @@
             android:id="@+id/movie_fav_fab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/detail_divider"
-            android:layout_gravity="bottom|right"
-            android:layout_marginLeft="135dp"
+            android:layout_below="@+id/ratings_layout"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@+id/movie_date_detail"
             android:src="@drawable/ic_favorite_small"
             app:fab_colorNormal="@color/white_common"
             app:fab_colorPressed="@color/yellow_A400"
@@ -79,11 +76,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/movie_image_detail"
-            android:layout_marginEnd="125dp"
-            android:layout_marginRight="125dp"
-            android:layout_toLeftOf="@id/movie_image_detail"
+            android:layout_marginLeft="30dp"
+            android:layout_toEndOf="@id/movie_image_detail"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <View
@@ -116,7 +111,6 @@
             android:id="@+id/movie_time_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/movie_date_detail"
             android:layout_alignStart="@+id/movie_date_detail"
             android:layout_below="@+id/movie_date_detail"
             android:layout_marginTop="20dp"
@@ -124,10 +118,9 @@
             android:textStyle="italic" />
 
         <LinearLayout
-            android:id="@+id/rating_layout"
+            android:id="@+id/ratings_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/movie_time_detail"
             android:layout_alignStart="@+id/movie_time_detail"
             android:layout_below="@+id/movie_time_detail"
             android:layout_marginTop="20dp"
@@ -144,7 +137,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:elevation="8dp" />
 
         </LinearLayout>
@@ -164,9 +157,9 @@
             <TextView
                 android:id="@+id/movie_description_detail"
                 style="@android:style/TextAppearance.Material.Display2"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -204,7 +197,6 @@
             android:id="@+id/review_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignLeft="@+id/movie_image_detail"
             android:layout_alignStart="@+id/movie_image_detail"
             android:layout_below="@id/review_title_text"
             android:layout_marginTop="15dp"
@@ -275,7 +267,6 @@
             android:id="@+id/trailer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignLeft="@+id/movie_image_detail"
             android:layout_alignStart="@+id/movie_image_detail"
             android:layout_below="@id/trailer_title_text"
             android:layout_marginBottom="20dp"

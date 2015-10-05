@@ -57,4 +57,5 @@
     <string name="progress_text_main">"Loading images .."</string>
     <string name="progress_text_detail">"Loading details .."</string>
     <string name="poster_image_desc">Poster image for a movie</string>
+    <string name="rating_image_desc">Image for ratings</string>
 </resources>

@@ -141,7 +141,6 @@ public class MovieProvider extends ContentProvider{
                 null);
     }
 
-    //TODO: Create tests under androidTest (com.android.popmovies.app.data) to test Uri matching
     public static UriMatcher buildUriMatcher(){
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MoviesContract.CONTENT_AUTHORITY;

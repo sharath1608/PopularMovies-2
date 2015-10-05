@@ -57,9 +57,9 @@
             android:id="@+id/movie_fav_fab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/review_title_text"
-            android:layout_marginBottom="35dp"
-            android:layout_marginStart="135dp"
+            android:layout_below="@+id/ratings_layout"
+            android:layout_marginTop="20dp"
+            android:layout_alignStart="@+id/movie_date_detail"
             android:src="@drawable/ic_favorite_small"
             app:fab_colorNormal="@color/white_common"
             app:fab_colorPressed="@color/yellow_A400"
@@ -86,7 +86,7 @@
             android:textStyle="italic" />
 
         <LinearLayout
-            android:id="@+id/movie_info_layout"
+            android:id="@+id/ratings_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/movie_time_detail"
@@ -157,6 +157,8 @@
                 style="@android:style/TextAppearance.Material.Display2"
                 android:textSize="15sp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
