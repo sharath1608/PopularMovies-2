@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Flixology</string>
+    <string name="app_name">PopFlix</string>
     <string name="action_settings">Settings</string>'
     <string name="tmdb_base_uri">http://api.themoviedb.org/3</string>
     <string name="discover_tag">discover</string>
@@ -58,4 +58,5 @@
     <string name="progress_text_detail">"Loading details .."</string>
     <string name="poster_image_desc">Poster image for a movie</string>
     <string name="rating_image_desc">Image for ratings</string>
+    <string name="grid_item_image_desc">Grid item image</string>
 </resources>

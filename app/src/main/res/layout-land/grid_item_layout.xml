@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
     
     <ImageView
+        android:contentDescription="@string/grid_item_image_desc"
         android:id="@+id/griditem_image"
         android:layout_width="140dp"
         android:layout_height="230dp"

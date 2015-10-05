@@ -253,7 +253,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     if (sortByValue.equals(favSortString)) {
                         viewFavorites();
                     }
-
+                    
                     // Not-so-elegant hack : OnItemSelected is triggered erroneously :
                     // Once when orientation changes
                     // Once when spinner position is 0 AND a grid item is selected.

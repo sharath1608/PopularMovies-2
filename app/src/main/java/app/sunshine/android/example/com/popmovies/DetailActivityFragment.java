@@ -28,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -114,6 +113,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         isReviewInDB = false;
         isMovieInDB = false;
         isSavedState = false;
+
+        // Create a new volley request queue
         mRequestQueue = Volley.newRequestQueue(getActivity());
         thisMovieData = new DetailMovieData();
         movieId = getArguments().getString(Intent.EXTRA_TEXT);
@@ -844,8 +845,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                         }
                     });
 
-            // Enable screen-wide touch and disable progress dialog.
-            //touchmask.enable_touchmask(false);
+
             progDialog.dismiss();
 
             // Some foreign movies display duration = 0 and description as "null".
