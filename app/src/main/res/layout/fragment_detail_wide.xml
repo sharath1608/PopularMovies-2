@@ -40,7 +40,7 @@
                 android:layout_gravity="center"
                 android:alpha="0.85"
                 android:gravity="center"
-                android:textColor="@color/primary_dark_material_dark"
+                android:textColor="@color/title_text_indigo"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -105,7 +105,7 @@
             android:alpha="0.85"
             android:gravity="center"
             android:text="@string/synopsis"
-            android:textColor="@color/primary_dark_material_dark" />
+            android:textColor="@color/title_text_indigo" />
 
         <TextView
             android:id="@+id/movie_time_detail"
@@ -191,7 +191,7 @@
             android:alpha="0.85"
             android:gravity="center"
             android:text="@string/reviews"
-            android:textColor="@color/primary_dark_material_dark" />
+            android:textColor="@color/title_text_indigo" />
 
         <LinearLayout
             android:id="@+id/review_layout"
@@ -227,7 +227,7 @@
             android:alpha="0.85"
             android:gravity="center"
             android:text="@string/cast"
-            android:textColor="@color/primary_dark_material_dark" />
+            android:textColor="@color/title_text_indigo"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -261,7 +261,7 @@
             android:alpha="0.85"
             android:gravity="center"
             android:text="@string/trailers"
-            android:textColor="@color/primary_dark_material_dark" />
+            android:textColor="@color/title_text_indigo" />
 
         <LinearLayout
             android:id="@+id/trailer_layout"

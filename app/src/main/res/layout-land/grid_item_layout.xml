@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|bottom"
-        android:textColor="@color/white_common"
-        android:background="@color/indigo_300"
+        android:textColor="@color/blue_grey_800"
+        android:background="@color/ripple_material_dark"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>
