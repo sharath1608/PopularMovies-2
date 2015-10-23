@@ -280,7 +280,7 @@ public class MovieProvider extends ContentProvider{
         // Notify the listeners of content change.
         if(row_count>0){
             getContext().getContentResolver().notifyChange(uri,null);
-        } else {
+        } else if(row_count<0){
             throw new SQLException("delete: Error deleting rows at "+uri);
         }
         return row_count;

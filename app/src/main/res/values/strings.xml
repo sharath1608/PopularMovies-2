@@ -4,7 +4,7 @@
     <string name="tmdb_base_uri">http://api.themoviedb.org/3</string>
     <string name="discover_tag">discover</string>
     <string name="movie_tag">movie</string>
-    <string name="api_key"></string>
+    <string name="api_key">630c07fa3fa86475de3cf0cd80027814</string>
     <string name="minutes">min</string>
     <string name="no_overview">No overview available</string>
     <string name="poster_base_path">http://image.tmdb.org/t/p</string>
@@ -22,12 +22,6 @@
     <string name="highest_rated">Highest Rated First</string>
     <string name="highest_grossing">Highest Grossing First</string>
     <string name="favorites">Favorites</string>
-    <string-array name="sort_option">
-        <item>Now Showing</item>
-        <item>Most Popular First</item>
-        <item>Highest Grossing First</item>
-        <item>Favorites</item>
-    </string-array>
     <string name="no_connect_string">"No connectivity! Please check your internet connection.</string>
     <string name="connectionErrorString">Error receiving data from server! DO NOT PANIC!</string>
     <string name="synopsis">Overview</string>
@@ -47,7 +41,7 @@
     <string name="share_movie">Share</string>
     <string name="share_base_string_1">Hey there! Check out this awesome trailer </string>
     <string name="share_base_string_2"> from the movie </string>
-    <string name="share_base_string3">#Flixology</string>
+    <string name="share_base_string3">#PopFlix</string>
     <string name="no_share_text">No trailers available to share.</string>
     <string name="no_detals_text">No details available for this cast member.</string>
     <string name="no_fav_text">No favorites to display</string>
@@ -59,4 +53,16 @@
     <string name="poster_image_desc">Poster image for a movie</string>
     <string name="rating_image_desc">Image for ratings</string>
     <string name="grid_item_image_desc">Grid item image</string>
+    <string name="grid_position">gridPosition</string>
+    <string name="swipe_position">swipePosition</string>
+    <string name="parse_array_key">parseArray</string>
+    <string name="clear_fav">Do you want to clear all the favorites?</string>
+    <string name="yes_clear">Yes</string>
+    <string name="no_clear">No</string>
+    <string name="clear_fav_title">Woah there!</string>
+    <string-array name="menu_options">
+        <item>Dummy</item>
+        <item>Clear Favorites</item>
+    </string-array>
+    <string name="all_fav_cleared">All favorites are cleared.</string>
 </resources>

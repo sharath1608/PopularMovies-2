@@ -17,7 +17,7 @@
         android:layout_alignEnd="@id/griditem_image"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/title_background_color"
+        android:background="@color/ripple_material_light"
         android:gravity="center_horizontal|bottom"
         android:textColor="@color/title_text_color" />
 
