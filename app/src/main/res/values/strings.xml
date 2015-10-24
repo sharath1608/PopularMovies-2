@@ -14,6 +14,7 @@
     <string name="popularity_sort">popularity.desc</string>
     <string name="ratings_sort">vote_average.desc</string>
     <string name="now_showing_sort">now_playing</string>
+    <string name="top_rated_sort">top_rated</string>
     <string name="earnings_sort">revenue.desc</string>
     <string name="newest_sort">primary_release_date.desc</string>
     <string name="details_base_path">http://api.themoviedb.org/3/movie/</string>
@@ -48,8 +49,21 @@
     <string name="fav_add_success">Added to favorites</string>
     <string name="fav_add_failure">Some weird error occurred.</string>
     <string name="fav_remove_success">Removed from favorites</string>
-    <string name="progress_text_main">"Loading images .."</string>
     <string name="progress_text_detail">"Loading details .."</string>
+    <string-array name="progress_text_detail">
+        <item>Quietening Velociraptors..</item>
+        <item>Lining up Minions..</item>
+        <item>Starting up Batmobile..</item>
+        <item>Landing on Mars..</item>
+        <item>Briefing James Bond..</item>
+        <item>Adding weird movies..</item>
+        <item>Reaching the summit..</item>
+        <item>Switching avatars..</item>
+        <item>Waking up Hagrid..</item>
+        <item>Hiding MY precious..</item>
+        <item>Assembling the Avengers..</item>
+        <item>Capturing the Black Pearl..</item>
+    </string-array>
     <string name="poster_image_desc">Poster image for a movie</string>
     <string name="rating_image_desc">Image for ratings</string>
     <string name="grid_item_image_desc">Grid item image</string>
